@@ -1,0 +1,47 @@
+body {
+  font-family: 'Lora', serif;
+}
+
+.landing-row {
+  background: url('https://images.unsplash.com/photo-1509924866384-d6e06502bd86?dpr=1&auto=format&fit=crop&w=1000&q=80&cs=tinysrgb&ixid=dW5zcGxhc2guY29tOzs7Ozs%3D');
+  background-size: cover;
+  min-height: 100vh;
+}
+
+.landing-color {
+
+}
+
+.row {
+  margin-bottom: 0px;
+}
+
+.restaurants-row {
+  min-height: 50vh;
+  background-color: #d7cec7;
+}
+
+nav {
+  background-color: transparent;
+  box-shadow: none;
+  padding-top: 20px; 
+}
+
+.landing-business {
+  display: flex;
+  justify-content: center;
+  color: #76323f;
+  font-size: 30px;
+}
+
+.select-landing {
+  margin-top: 50vh;
+}
+
+.search-text {
+  color: #fff;
+  display: flex;
+  font-size: 35px;
+  font-weight: bold;
+  justify-content: center;
+}

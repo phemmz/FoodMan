@@ -1,1 +1,4 @@
 node_modules/
+server-babel-transpiled.js
+transpiled-server/
+.env

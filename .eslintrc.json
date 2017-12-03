@@ -29,6 +29,7 @@
       }
     }
   },
+  "parser": "babel-eslint",
   "rules": {
     "max-len": [2, 80, 4, {"ignoreUrls": true}],
     "one-var": 0,
