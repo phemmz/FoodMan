@@ -58,7 +58,7 @@
     "react-materialize": "^1.1.0",
     "react-redux": "^5.0.6",
     "react-router-dom": "4.1.1",
-    "react-select": "^1.1.0",
+    "react-select": "1.0.0",
     "redux": "^3.7.2",
     "redux-thunk": "^2.2.0",
     "sass-loader": "6.0.6",

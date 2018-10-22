@@ -16,10 +16,6 @@ var _winston = require('winston');
 
 var _winston2 = _interopRequireDefault(_winston);
 
-var _open = require('open');
-
-var _open2 = _interopRequireDefault(_open);
-
 var _webpack = require('webpack');
 
 var _webpack2 = _interopRequireDefault(_webpack);

@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
-import { connect, Dispatch } from 'react-redux';
+import { connect } from 'react-redux';
 
 import { Navbar, NavItem, Row, Col, CardPanel } from 'react-materialize';
-import Select from 'react-select';
+import { Async } from 'react-select';
 
-import { getSearchResults } from '../actions/googleSearch';
+import SearchPlaces from '../actions/googleSearch';
+import { placesAutoComplete, getPlaceDetails } from '../utils/googleApiHelper';
 
 /**
  *@returns {void}
@@ -17,20 +18,64 @@ class LandingPage extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      searchResults: {}
+      searchResults: null,
+      option: null,
+      loadingResults: false
     };
 
-    this.handSearchQuery = this.handSearchQuery.bind(this);
+    this.handleSearchQuery = this.handleSearchQuery.bind(this);
+    this.handleSearchClick = this.handleSearchClick.bind(this);
   }
 
-  componentDidMount() {
-    this.props.getSearchResults();
+
+
+  getLocation() {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(this.showPosition, this.showError);
+    } else {
+      alert("Not supported");
+    }
+  }
+
+  showPosition(position) {
+    console.log("lat: ", position.coords.latitude, "long: ", position.coords.longitude);
+  }
+
+  showError(error) {
+    console.log(error);
+  }
+
+  /**
+   * @param {*} searchKey
+   * @returns {*} void
+   */
+  handleSearchQuery(searchKey) {
+    this.setState({ loadingResults: false });
+    if (!this.state.loadingResults) {
+      return placesAutoComplete(searchKey)
+        .then((response) => {
+          this.setState({ loadingResults: true });
+          return { options: response };
+        })
+        .catch(() => {
+          this.setState({ loadingResults: true });
+        });
+    }
   }
 
   /**
    * @returns {*} void
+   * @param {*} value
    */
-  handSearchQuery() {
+  handleSearchClick(value) {
+    this.setState({
+      value,
+      loadingResults: false
+    });
+    getPlaceDetails(value.place_id)
+      .then(() => {
+        this.props.history.push(`/reviews/${value.place_id}`);
+      });
   }
 
   /**
@@ -48,10 +93,14 @@ class LandingPage extends Component {
           </Col>
           <Col s={8} offset="s2" className="select-landing">
             <div className="search-text">Search For Restaurants Nearby</div>
-            <Select
+            <Async
               name="form-field-name"
-              value={this.state.searchResults}
-              onChange={this.handSearchQuery}
+              autoload={false}
+              value={this.state.value}
+              loadOptions={this.handleSearchQuery}
+              onChange={this.handleSearchClick}
+              valueKey="description"
+              labelKey="description"
             />
           </Col>
         </Row>
@@ -72,18 +121,9 @@ class LandingPage extends Component {
             </CardPanel>
           </Col>
         </Row>
-        <div id="map" />
       </div>
     );
   }
 }
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    getSearchResults: () => {
-      return dispatch(getSearchResults());
-    }
-  };
-};
-
-export default connect(null, mapDispatchToProps)(LandingPage);
+export default LandingPage;
